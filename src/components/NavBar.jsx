@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Stack, Button, Badge } from '@mui/material';
@@ -8,9 +9,11 @@ import SellIcon from '@mui/icons-material/Sell';
 
 import { logo } from '../utils/constants';
 import SearchBar from './SearchBar';
+import FavoriteContext from '../context/FavoriteContext';
 
-const NavBar = ({ addToFavorite }) => {
+const NavBar = () => {
     const navigate = useNavigate();
+    const { addToFavorite } = useContext(FavoriteContext);
 
     return (
         <Stack direction="row" alignItems="center" p={2}
