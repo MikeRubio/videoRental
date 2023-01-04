@@ -7,3 +7,6 @@ export { default as SideBar } from './SideBar';
 export { default as Videos } from './Videos';
 export { default as VideoCard } from './VideoCard';
 export { default as LikedVideos } from './LikedVideos';
+export { default as RentedVideos } from './RentedVideos';
+export { default as ErrorRoute } from './ErrorRoute';
+export { default as ActionDialog } from './ActionDialog';

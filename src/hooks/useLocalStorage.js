@@ -21,12 +21,3 @@ export const useLocalStorage = (key, initialValue) => {
     }
     return [storedValue, setValue]
 }
-
-export const useGetLocalStorage = (key) => {
-    try {
-        const item = window.localStorage.getItem(key);
-        return item ? JSON.parse(item) : [];
-    } catch (error) {
-        return [];
-    }
-};
