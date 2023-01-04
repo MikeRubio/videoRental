@@ -14,16 +14,28 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import { encodeURL } from '../utils/encode';
 import FavoriteContext from '../context/FavoriteContext';
+import RentContext from '../context/RentContext';
+
+import ActionDialog from './ActionDialog';
 
 import './VideoCard.css';
 
 const VideoCard = ({ video, enableActions }) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const [isRented, setIsRented] = useState(false);
+    const [openDialog, setOpenDialog] = useState(false);
+
     const { addToFavorite, addVideoToFavorite, removeVideoFromFavorite } = useContext(FavoriteContext);
+    const { rented, removeVideoFromRented } = useContext(RentContext);
+
+    const handleDialogOpen = () => {
+        setOpenDialog(true);
+    };
 
     useEffect(() => {
         setIsFavorite(Boolean(addToFavorite.find(elm => elm.id === video.id)))
-    }, [addToFavorite])
+        setIsRented(Boolean(rented.find(elm => elm.id === video.id)))
+    }, [addToFavorite, rented])
 
     return (
         <Card sx={{ width: { xs: '100%', sm: '358px', md: '320px' }, boxShadow: 'none', borderRadius: 0 }}>
@@ -68,16 +80,27 @@ const VideoCard = ({ video, enableActions }) => {
                     </Typography>
                 </CardContent>
             </Link>
-            {enableActions && <CardActions sx={{ backgroundColor: '#1e1e1e' }}>
-                {isFavorite ? <Button size="small" variant="text" color='error' startIcon={<CheckCircleIcon />} onClick={() => removeVideoFromFavorite(video)}>
-                    Added
-                </Button> : <Button size="small" variant="text" color='info' startIcon={<FavoriteIcon />} onClick={() => addVideoToFavorite(video)}>
-                    Add to favorite
-                </Button>}
+            {enableActions && <CardActions sx={{ backgroundColor: '#1e1e1e', display: 'flex', justifyContent: 'space-between' }}>
+                {
+                    isFavorite
+                        ? <Button size="small" variant="text" color='error' startIcon={<CheckCircleIcon />} onClick={() => removeVideoFromFavorite(video)}>
+                            Added
+                        </Button>
+                        : <Button size="small" variant="text" color='info' startIcon={<FavoriteIcon />} onClick={() => addVideoToFavorite(video)}>
+                            Add to favorite
+                        </Button>
+                }
 
-                <Button size="small" variant="text" color='info' startIcon={<SellIcon />}>
-                    Rent
-                </Button>
+                {
+                    isRented
+                        ? <Button size="small" variant="text" color='success' startIcon={<CheckCircleIcon />} onClick={() => removeVideoFromRented(video)}>
+                            Rented
+                        </Button>
+                        : <Button size="small" variant="text" color='info' startIcon={<SellIcon />} onClick={handleDialogOpen}>
+                            Rent video
+                        </Button>
+                }
+                <ActionDialog openDialog={openDialog} setOpenDialog={setOpenDialog} video={video}></ActionDialog>
             </CardActions>}
         </Card >
     )

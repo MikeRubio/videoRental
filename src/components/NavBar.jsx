@@ -9,11 +9,15 @@ import SellIcon from '@mui/icons-material/Sell';
 
 import { logo } from '../utils/constants';
 import SearchBar from './SearchBar';
+
 import FavoriteContext from '../context/FavoriteContext';
+import RentContext from '../context/RentContext';
 
 const NavBar = () => {
     const navigate = useNavigate();
+
     const { addToFavorite } = useContext(FavoriteContext);
+    const { rented } = useContext(RentContext);
 
     return (
         <Stack direction="row" alignItems="center" p={2}
@@ -33,12 +37,22 @@ const NavBar = () => {
                     </Badge>}
                     onClick={() => navigate('/liked')}
                 >
-                    Favorite
+                    Watch Later
                 </Button>
 
-                <Button variant="text" color='info' startIcon={<SellIcon sx={{ color: '#008fbe' }} />}>
-                    Rented
+                <Button variant="text" color='info'
+                    startIcon={<Badge max={10} anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                        badgeContent={rented.length} color="success">
+                        <SellIcon sx={{ color: '#008fbe' }} />
+                    </Badge>}
+                    onClick={() => navigate('/my-rented-videos')}
+                >
+                    Rented Movies
                 </Button>
+
             </div>
         </Stack>
     )

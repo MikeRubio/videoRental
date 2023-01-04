@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { FAVORITE_LOCAL_STORAGE_KEY } from "../utils/constants";
 
