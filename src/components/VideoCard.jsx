@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import parse from 'html-react-parser';
@@ -13,11 +13,13 @@ import SellIcon from '@mui/icons-material/Sell';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import { encodeURL } from '../utils/encode';
+import FavoriteContext from '../context/FavoriteContext';
 
 import './VideoCard.css';
 
-const VideoCard = ({ video, enableActions, addToFavorite, addVideoToFavorite }) => {
+const VideoCard = ({ video, enableActions }) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const { addToFavorite, addVideoToFavorite, removeVideoFromFavorite } = useContext(FavoriteContext);
 
     useEffect(() => {
         setIsFavorite(Boolean(addToFavorite.find(elm => elm.id === video.id)))
@@ -67,7 +69,7 @@ const VideoCard = ({ video, enableActions, addToFavorite, addVideoToFavorite }) 
                 </CardContent>
             </Link>
             {enableActions && <CardActions sx={{ backgroundColor: '#1e1e1e' }}>
-                {isFavorite ? <Button size="small" variant="text" color='error' startIcon={<CheckCircleIcon />}>
+                {isFavorite ? <Button size="small" variant="text" color='error' startIcon={<CheckCircleIcon />} onClick={() => removeVideoFromFavorite(video)}>
                     Added
                 </Button> : <Button size="small" variant="text" color='info' startIcon={<FavoriteIcon />} onClick={() => addVideoToFavorite(video)}>
                     Add to favorite

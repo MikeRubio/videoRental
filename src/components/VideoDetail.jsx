@@ -10,7 +10,7 @@ import { getTraillerIdFromApi, getTraillerLinkFromApi } from '../utils/fetchFrom
 import { imdbMovieList } from '../utils/imdbMovieList';
 import { decodeURL } from '../utils/encode';
 
-const VideoDetail = ({ addToFavorite, setAddToFavorite }) => {
+const VideoDetail = () => {
     const { id } = useParams();
     const [traillerDetails, setTraillerDetails] = useState('');
     const [traillerUrl, setTraillerUrl] = useState('');
@@ -58,7 +58,7 @@ const VideoDetail = ({ addToFavorite, setAddToFavorite }) => {
                     </Box>}
                 </Box>
                 <Box px={2} py={{ md: 1, xs: 5 }} justifyContent='center'>
-                    <Videos videos={recomendedVideos} enableActions={false} direction='column' addToFavorite={addToFavorite} setAddToFavorite={setAddToFavorite} />
+                    <Videos videos={recomendedVideos} enableActions={false} direction='column' />
                 </Box>
             </Stack >
         </Box >

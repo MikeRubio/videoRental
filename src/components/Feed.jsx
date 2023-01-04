@@ -5,7 +5,7 @@ import { SideBar, Videos } from './';
 import { fetchFromApi } from '../utils/fetchFromApi';
 import { imdbMovieList } from '../utils/imdbMovieList';
 
-const Feed = ({ addToFavorite, setAddToFavorite }) => {
+const Feed = () => {
     const [selectedCat, setSelectedCat] = useState(['Dramas militares', '11']);
     const [videos, setVideos] = useState([]);
 
@@ -27,7 +27,7 @@ const Feed = ({ addToFavorite, setAddToFavorite }) => {
                 <Typography variant='h4' fontWeight='bold' mb={2} sx={{ color: 'white' }}>
                     {selectedCat[0]}  <span style={{ color: '#008fbe' }}>Videos</span>
                 </Typography>
-                <Videos videos={videos} enableActions={true} addToFavorite={addToFavorite} setAddToFavorite={setAddToFavorite} />
+                <Videos videos={videos} enableActions={true} />
             </Box>
         </Stack>
     )
