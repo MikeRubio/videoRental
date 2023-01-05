@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Typography, Box, Stack } from "@mui/material";
+import { Typography, Box, Stack, CircularProgress } from "@mui/material";
 
 import ReactPlayer from 'react-player';
 import parse from 'html-react-parser';
@@ -10,57 +10,100 @@ import { getTraillerIdFromApi, getTraillerLinkFromApi } from '../utils/fetchFrom
 import { imdbMovieList } from '../utils/imdbMovieList';
 import { decodeURL } from '../utils/encode';
 
+import RentContext from '../context/RentContext';
+
 const VideoDetail = () => {
     const { id } = useParams();
     const [traillerDetails, setTraillerDetails] = useState('');
     const [traillerUrl, setTraillerUrl] = useState('');
     const [recomendedVideos, setRecomendedVideos] = useState([]);
-    const [error, setError] = useState(true);
+    const [error, setError] = useState(false);
+    const [isRented, setIsRented] = useState(false);
+    const [isLoading, setLoading] = useState(true);
+    const [decodedId, setDecodedId] = useState('');
 
-    // useEffect(() => {
-    //     getTraillerIdFromApi(parse(decodeURL(id))).then(({ resource }) => {
-    //         setTraillerDetails(resource);
+    const { rented } = useContext(RentContext);
 
-    //         if (resource.size !== 0) {
-    //             getTraillerLinkFromApi(resource?.videos[0]?.id.split('/')[2]).then(({ resource }) => {
-    //                 setTraillerUrl(resource?.encodings[1]?.playUrl)
-    //             })
-    //         } else setError(true);
-    //     })
-    //     setRecomendedVideos(imdbMovieList)
-    // }, [id])
+    useEffect(() => {
+        console.log(id)
+        setDecodedId(parse(decodeURL(id)));
+    }, [id])
+
+    useEffect(() => {
+        setIsRented(Boolean(rented.find(elm => elm.imdbid === decodedId)));
+    }, [decodedId])
+
+    useEffect(() => {
+        if (isRented) {
+            getTraillerIdFromApi(decodedId)
+                .then(({ resource }) => {
+                    setTraillerDetails(resource);
+                })
+                .catch(() => {
+                    setError(true);
+                    setLoading(false);
+                    alert("Sorry we could't find your movie");
+                });
+        } else {
+            setError(true);
+        }
+        setRecomendedVideos(imdbMovieList)
+    }, [isRented])
+
+    useEffect(() => {
+        if (Boolean(traillerDetails)) {
+            if (traillerDetails?.videos?.length) {
+                getTraillerLinkFromApi(traillerDetails?.videos[0]?.id.split('/')[2]).then(({ resource }) => {
+                    setTraillerUrl(resource?.encodings[1]?.playUrl)
+                    setError(false);
+                    setLoading(false);
+                })
+            } else {
+                setError(true);
+                setLoading(false);
+            };
+        }
+
+    }, [traillerDetails])
 
     return (
-        <Box minHeight='95vh'>
-            <Stack flexDirection={{ xs: 'column', md: 'row' }}>
-                <Box flex={1}>
-                    {error ? <Typography color='#fff' variant='h5' fontWeight='bold' p={2}>
-                        We are working to add this video
-                    </Typography> : <Box sx={{ width: '100%', position: 'sticky', top: '86px' }}>
-                        <ReactPlayer url={traillerUrl} className='react-player' controls />
-                        <Typography color='#fff' variant='h5' fontWeight='bold' p={2}>
-                            {traillerDetails.title}
+        <Box minHeight='95vh' style={{ overflow: 'visible' }}>
+            {isLoading
+                ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                    <CircularProgress size={90} />
+                </div>
+                : <Stack flexDirection={{ xs: 'column', md: 'column' }}>
+                    {error
+                        ? <Typography color='#fff' variant='h2' fontWeight='bold' p={2}>
+                            Opps! something went wrong
                         </Typography>
-                        <Stack direction='row' justifyContent='start' sx={{ color: '#fff' }} py={1} px={2}>
-                            <Typography color='#fff' variant='body1' p={1}>
-                                Duration: {traillerDetails?.videos[0]?.durationInSeconds}sec
-                            </Typography>
-                            <Typography color='#fff' variant='body1' p={1}>
-                                released: {traillerDetails?.year}
-                            </Typography>
-                            <Typography color='#fff' variant='body1' p={1}>
-                                Lang: {traillerDetails?.videos[0]?.audioLanguage}
-                            </Typography>
-                        </Stack>
-                        <Typography color='#fff' variant='body2' p={1}>
-                            {traillerDetails?.videos[0]?.description}
-                        </Typography>
-                    </Box>}
-                </Box>
-                <Box px={2} py={{ md: 1, xs: 5 }} justifyContent='center'>
-                    <Videos videos={recomendedVideos} enableActions={false} direction='column' />
-                </Box>
-            </Stack >
+                        : <Box flex={1}>
+                            <Box sx={{ width: '100%', position: 'sticky', top: '86px' }}>
+                                <ReactPlayer url={traillerUrl} className='react-player' controls />
+                                <Typography color='#fff' variant='h5' fontWeight='bold' p={2}>
+                                    {traillerDetails.title}
+                                </Typography>
+                                <Stack direction='row' justifyContent='start' sx={{ color: '#fff' }} py={1} px={2}>
+                                    <Typography color='#fff' variant='body1' p={1}>
+                                        Duration: {traillerDetails?.videos[0]?.durationInSeconds}sec
+                                    </Typography>
+                                    <Typography color='#fff' variant='body1' p={1}>
+                                        released: {traillerDetails?.year}
+                                    </Typography>
+                                    <Typography color='#fff' variant='body1' p={1}>
+                                        Lang: {traillerDetails?.videos[0]?.audioLanguage}
+                                    </Typography>
+                                </Stack>
+                                <Typography color='#fff' variant='body2' p={1}>
+                                    {traillerDetails?.videos[0]?.description}
+                                </Typography>
+                            </Box>
+                        </Box>
+                    }
+                    <Box px={2} py={{ md: 2, xs: 5 }} justifyContent='center'>
+                        <Videos videos={recomendedVideos} enableActions={true} direction='row' />
+                    </Box>
+                </Stack >}
         </Box >
     )
 }

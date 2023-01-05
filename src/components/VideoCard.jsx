@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import parse from 'html-react-parser';
 
-import { Button, Card, CardContent, CardMedia, CardActions, Typography } from "@mui/material";
+import { Button, Card, CardContent, CardMedia, CardActions, CardHeader, Typography } from "@mui/material";
 
 import AccessTime from '@mui/icons-material/AccessTime';
 import TrendingUp from '@mui/icons-material/TrendingUp';
@@ -39,47 +39,53 @@ const VideoCard = ({ video, enableActions }) => {
 
     return (
         <Card sx={{ width: { xs: '100%', sm: '358px', md: '320px' }, boxShadow: 'none', borderRadius: 0 }}>
-            <Link className="video-card" to={`/video/${encodeURL(video.imdbid)}`}>
+            <Link to={isRented && `/video/${encodeURL(video.imdbid)}`}>
                 <CardMedia
+                    className="video-card"
                     component="img"
                     alt={video.title}
                     image={video.img}
                     sx={{
                         width: {
-                            xs: '100%', sm: '358px'
-                        }, height: 180
+                            xs: '100%'
+                        }
                     }}
                 />
-                <CardContent sx={{ backgroundColor: '#1e1e1e', height: '106px' }}>
-                    <span className="video-title">
-                        {parse(video.title)} <br></br>
-                    </span>
-                    {enableActions && <div>
-                        <Button
-                            variant="text"
-                            startIcon={<AccessTime />}
-                        >
-                            {`${Math.floor(video.runtime / 60)} min`}
-                        </Button>
-                        <Button
-                            variant="text"
-                            startIcon={<CalendarToday />}
-                        >
-                            {video.titledate}
-                        </Button>
-                        <Button
-                            variant="text"
-                            startIcon={<TrendingUp />}
-                        >
-                            {video.imdbrating}
-                        </Button>
-                    </div>}
-
-                    <Typography variant="body2" color='#FFF'>
-                        {[...video.synopsis].splice(0, 100)}...
-                    </Typography>
-                </CardContent>
             </Link>
+            <CardContent sx={{ backgroundColor: '#1e1e1e', height: '120px' }}>
+                <h3 className="video-title">
+                    {parse(video.title)} <br></br>
+                </h3>
+                {isRented
+                    ? <Typography variant="body1" fontWeight={600} color='#008fbe'>Ready to play</Typography>
+                    : <Typography variant="subtitle2" color='#fff'>please rent first</Typography>}
+
+                {enableActions && <div>
+                    <Button
+                        variant="text"
+                        startIcon={<AccessTime />}
+                    >
+                        {`${Math.floor(video.runtime / 60)} min`}
+                    </Button>
+                    <Button
+                        variant="text"
+                        startIcon={<CalendarToday />}
+                    >
+                        {video.titledate}
+                    </Button>
+                    <Button
+                        variant="text"
+                        startIcon={<TrendingUp />}
+                    >
+                        {video.imdbrating}
+                    </Button>
+                </div>}
+
+                <Typography variant="body2" color='#FFF'>
+                    {[...video.synopsis].splice(0, 100)}...
+                </Typography>
+            </CardContent>
+
             {enableActions && <CardActions sx={{ backgroundColor: '#1e1e1e', display: 'flex', justifyContent: 'space-between' }}>
                 {
                     isFavorite

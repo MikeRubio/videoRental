@@ -37,7 +37,7 @@ const NavBar = () => {
                     </Badge>}
                     onClick={() => navigate('/liked')}
                 >
-                    Watch Later
+                    Liked Videos
                 </Button>
 
                 <Button variant="text" color='info'
