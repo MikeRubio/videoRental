@@ -1,0 +1,10 @@
+.text-style {
+    color: #008fbe;
+}
+
+.circular-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%
+}

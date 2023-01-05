@@ -1,9 +1,7 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import { Stack, Button, Badge } from '@mui/material';
-import { Link } from 'react-router-dom';
-
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
 
@@ -12,6 +10,8 @@ import SearchBar from './SearchBar';
 
 import FavoriteContext from '../context/FavoriteContext';
 import RentContext from '../context/RentContext';
+
+import './NavBar.css';
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const NavBar = () => {
     return (
         <Stack direction="row" alignItems="center" p={2}
             sx={{ position: 'sticky', background: '#000', top: 0, justifyContent: 'space-between' }}>
-            <Link to='/' style={{ display: 'flex', alignItems: 'center' }}>
+            <Link to='/' className='logo-container'>
                 <img src={logo} alt='uinir logo' height={55} />
             </Link>
             <SearchBar />
@@ -36,6 +36,7 @@ const NavBar = () => {
                         <FavoriteIcon sx={{ color: '#008fbe' }} />
                     </Badge>}
                     onClick={() => navigate('/liked')}
+                    sx={{ mr: 5 }}
                 >
                     Liked Videos
                 </Button>
@@ -54,7 +55,7 @@ const NavBar = () => {
                 </Button>
 
             </div>
-        </Stack>
+        </Stack >
     )
 }
 

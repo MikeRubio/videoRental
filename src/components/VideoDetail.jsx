@@ -12,6 +12,8 @@ import { decodeURL } from '../utils/encode';
 
 import RentContext from '../context/RentContext';
 
+import './VideoDetail.css';
+
 const VideoDetail = () => {
     const { id } = useParams();
     const [traillerDetails, setTraillerDetails] = useState('');
@@ -47,7 +49,7 @@ const VideoDetail = () => {
         } else {
             setError(true);
         }
-        setRecomendedVideos(imdbMovieList)
+        setRecomendedVideos(imdbMovieList.sort(() => .5 - Math.random()).slice(0, 6))
     }, [isRented])
 
     useEffect(() => {
@@ -67,9 +69,9 @@ const VideoDetail = () => {
     }, [traillerDetails])
 
     return (
-        <Box minHeight='95vh' style={{ overflow: 'visible' }}>
+        <Box className='container'>
             {isLoading
-                ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                ? <div className='circular-progress'>
                     <CircularProgress size={90} />
                 </div>
                 : <Stack flexDirection={{ xs: 'column', md: 'column' }}>
@@ -103,7 +105,8 @@ const VideoDetail = () => {
                     <Box px={2} py={{ md: 2, xs: 5 }} justifyContent='center'>
                         <Videos videos={recomendedVideos} enableActions={true} direction='row' />
                     </Box>
-                </Stack >}
+                </Stack >
+            }
         </Box >
     )
 }

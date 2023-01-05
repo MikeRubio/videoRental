@@ -17,10 +17,10 @@ const ErrorRoute = () => {
                 minHeight: '100vh',
             }}
         >
-            <Typography variant="h1" className='text'>
+            <Typography variant="h1" className='text-style'>
                 404
             </Typography>
-            <Typography variant="h6" className='text'>
+            <Typography variant="h6" className='text-style'>
                 This is a message from the  telling you that this page is not ready in the <bold>PRESENT</bold>.
             </Typography>
             <Button variant="outlined" onClick={() => navigate('/')}>Back Home</Button>

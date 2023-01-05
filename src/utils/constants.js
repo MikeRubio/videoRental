@@ -9,12 +9,12 @@ export const FAVORITE_LOCAL_STORAGE_KEY = 'favorite';
 export const RENT_LOCAL_STORAGE_KEY = 'rent';
 
 export const categories = [
+    { name: 'Family comedy', id: '52847', icon: <LocalMovies />, },
+    { name: 'Crime Comedies', id: '4058', icon: <LocalMovies />, },
     { name: 'Dramas militares', id: '11', icon: <TheaterComedyIcon />, },
     { name: 'Dramas románticos', id: '1255', icon: <TheaterComedyIcon />, },
     { name: 'Mockumentaries', id: '26', icon: <LocalMovies />, },
     { name: 'Sports Documentaries', id: '180', icon: <LocalMovies />, },
-    { name: 'Family comedy', id: '52847', icon: <LocalMovies />, },
-    { name: 'Crime Comedies', id: '4058', icon: <LocalMovies />, },
     { name: 'Sci-Fi & Fantasy', id: '1492', icon: <LocalMovies /> },
     { name: 'Crime Films', id: '5824', icon: <LocalMovies />, },
     { name: 'Animation', id: '4698', icon: <Animation />, },

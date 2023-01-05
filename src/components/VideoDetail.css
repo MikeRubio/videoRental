@@ -1,0 +1,11 @@
+.container {
+    overflow: visible;
+    min-height: 95vh;
+}
+
+.circular-progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%
+}

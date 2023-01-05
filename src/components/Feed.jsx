@@ -3,10 +3,11 @@ import { Stack, Box, Typography, CircularProgress } from '@mui/material';
 
 import { SideBar, Videos } from './';
 import { fetchFromApi } from '../utils/fetchFromApi';
-import { imdbMovieList } from '../utils/imdbMovieList';
+
+import './Feed.css';
 
 const Feed = () => {
-    const [selectedCat, setSelectedCat] = useState(['Dramas militares', '11']);
+    const [selectedCat, setSelectedCat] = useState(['Family comedy', '52847']);
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -17,7 +18,6 @@ const Feed = () => {
                 setVideos(data.results.filter(imdb => imdb.imdbrating !== null));
                 setIsLoading(false);
             })
-        // setVideos(imdbMovieList.filter(imdb => imdb.imdbrating !== null))
     }, [selectedCat])
 
     return (
@@ -29,12 +29,12 @@ const Feed = () => {
                 </Typography>
             </Box>
             {isLoading
-                ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                ? <div className='circular-progress'>
                     <CircularProgress size={50} />
                 </div>
                 : <Box p={2} sx={{ overflowY: 'auto', height: '90vh', flex: 2 }}>
                     <Typography variant='h4' fontWeight='bold' mb={2} sx={{ color: 'white' }}>
-                        {selectedCat[0]}  <span style={{ color: '#008fbe' }}>Videos</span>
+                        {selectedCat[0]}  <span className='title'>Videos</span>
                     </Typography>
                     <Videos videos={videos} enableActions={true} />
                 </Box>
